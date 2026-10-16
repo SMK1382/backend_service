@@ -1,0 +1,18 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: postgres-dbn
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: parts_user
+      POSTGRES_PASSWORD: parts_pass
+      POSTGRES_DB: parts_db
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U parts_user -d parts_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
