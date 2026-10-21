@@ -16,13 +16,18 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "typecript_init": "tsc --init"
+    "typecript_init": "tsc --init",
+    "index": "node dist/db/index.js",
+    "typecheck": "tsc --noEmit",
+    "tsc": " tsc"
   },
   "dependencies": {
     "cors": "^2.8.6",
     "dotenv": "^18.0.7",
     "drizzle-orm": "^0.45.4",
-    "express": "^5.3.0"
+    "express": "^5.3.0",
+    "pg": "^8.23.1",
+    "postgres": "^3.4.9"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",
