@@ -1,5 +1,5 @@
-import { varchar, pgEnum, pgTable, primaryKey, serial, uniqueIndex, timestamp, integer, text, boolean, index } from 'drizzle-orm/pg-core';
-import { relations } from 'drizzle-orm';
+import { varchar, pgEnum, pgTable, serial, uniqueIndex, timestamp, integer, text, boolean, index } from 'drizzle-orm/pg-core';
+// import { relations } from 'drizzle-orm';
 
 
 export const partTypeEnum = pgEnum('partType', ['Original', 'Stock', 'After_Market'])
@@ -15,11 +15,11 @@ export const reviewStatusEnum = pgEnum('reviewStatus', ['Pending', 'Approved', '
 
 
 
-export const carBrands = pgTable('manufacturer_brand', {
+export const carBrands = pgTable('car_brands', {
     id: serial('id').primaryKey(),
-    name: varchar('name', { length: 10 }).unique().notNull(),
-    slug: varchar('slug', { length: 100 }).unique().notNull(),
-    country: varchar('country', { length: 10 }).notNull(),
+    name: varchar('name', { length: 50 }).unique().notNull(),
+    slug: varchar('slug', { length: 50 }).unique().notNull(),
+    country: varchar('country', { length: 50 }).notNull(),
     description: text('description'),
     isActive: boolean('is_active').default(true).notNull(),
     createdAt: timestamp('created_at').defaultNow().notNull(),
@@ -30,14 +30,14 @@ export const carBrands = pgTable('manufacturer_brand', {
 
 export const carModels = pgTable('cars', {
     id: serial('id').primaryKey(),
-    nameFa: varchar('name_fa', { length: 20 }).notNull(),
-    nameEn: varchar('name_En', { length: 20 }).notNull(),
-    brandName: varchar('brand_name', { length: 10 }).references(() => carBrands.id).notNull(),
-    engineCode: integer('engin_code').notNull(),
-    vin: integer('VIN').notNull(),
-    yearOfManufacture: integer('Year_of_manufacture').notNull(),
+    nameFa: varchar('name_fa', { length: 50 }).notNull(),
+    nameEn: varchar('name_en', { length: 50 }).notNull(),
+    brandId: integer('brand_Id').references(() => carBrands.id).notNull(),
+    // engineCode: integer('engine_code').notNull(),
+    // vin: varchar('VIN', { length: 17 }).notNull(),
+    yearOfManufacture: integer('year_of_manufacture').notNull(),
     createdAt: timestamp('created_at').defaultNow().notNull(),
-    updatedAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().notNull(),
 })
 
 ///////////////////////////////////////////////////////////////////
@@ -52,7 +52,7 @@ export const categories = pgTable(
         sortOrder: integer('sort_order').default(0).notNull(),
         isActive: boolean('is_active').default(true).notNull(),
         createdAt: timestamp('created_at').defaultNow().notNull(),
-        updatedAt: timestamp('created_at').defaultNow().notNull(),
+        updatedAt: timestamp('updated_at').defaultNow().notNull(),
     },
     (table) => [
         uniqueIndex('categories_slug_unique').on(table.slug),
@@ -62,14 +62,40 @@ export const categories = pgTable(
 ////////////////////////////////////////////////////////////////////
 export const partBrands = pgTable('part_brands', {
     id: serial('id').primaryKey(),
-    name: varchar('name', { length: 20 }).notNull(),
-    slug: varchar('slug', { length: 20 }).notNull(),
-    countryOfOrigin: varchar('slug', { length: 20 }).notNull(),
+    name: varchar('name', { length: 50 }).notNull(),
+    slug: varchar('slug', { length: 50 }).notNull(),
+    countryOfOrigin: varchar('country_of_origin', { length: 50 }).notNull(),
     description: text('description'),
     status: statusEnum('status').default('Active').notNull(),
     createdAt: timestamp('created_at').defaultNow().notNull(),
-    updatedAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().notNull(),
 })
+////////////////////////////////////////////////////////////////////
+export const discounts = pgTable('discounts', {
+    id: serial('id').primaryKey(),
+    name: varchar('name', { length: 50 }).notNull(),
+    amount: integer('amount').notNull(),
+    discountType: discountTypeEnum('discountType').default('percentage').notNull(),
+    status: statusEnum('status').default('Active').notNull(),
+    startDate: timestamp('start_date').defaultNow().notNull(),
+    endDate: timestamp('end_date').defaultNow().notNull(),
+})
+///////////////////////////////////////////////
+export const suppliers = pgTable('suppliers',
+    {
+        id: serial('id').primaryKey(),
+        supplierName: varchar('supplier_name', { length: 40 }).notNull(),
+        supplierType: supplierTypeEnum('supplier_type').default('Distributor').notNull(),
+        contactPersonName: varchar('contact_person_name', { length: 50 }).notNull(),
+        nationalCode: varchar('national_code', { length: 11 }).notNull(),
+        phoneNumber: varchar('phone_number', { length: 11 }).notNull(),
+        bankAccountNumber: varchar('bank_account_number', { length: 24 }).notNull(),
+        score: integer('score').notNull(),
+        status: statusEnum('status').default('Active').notNull(),
+        cooperationStartDate: timestamp('cooperation_start_date').defaultNow().notNull(),
+        description: text('description').notNull()
+    },
+);
 ////////////////////////////////////////////////////////////////////
 export const parts = pgTable(
     'parts',
@@ -77,7 +103,7 @@ export const parts = pgTable(
         id: serial('id').primaryKey(),
         name: varchar('name', { length: 180 }).notNull(),
         slug: varchar('slug', { length: 220 }).notNull(),
-        brandId: integer('brnad_id').references(() => partBrands.id, {
+        brandId: integer('brand_id').references(() => partBrands.id, {
             onDelete: 'set null'
         }),
         description: text('description'),
@@ -86,9 +112,9 @@ export const parts = pgTable(
             onDelete: 'set null'
         }), // قیمت با تخفیف (اگر باشد)
         stock: integer('stock').default(0).notNull(), // تعداد موجود در انبار
-        partNumber: varchar('part_number', { length: 60 }), // کد فنی قطعه
+        partNumber: varchar('part_number', { length: 100 }), // کد فنی قطعه
         weightGrams: integer('weight_grams'), // وزن به گرم
-        supplier: varchar('supplier').references(() => suppliers.id).notNull(),
+        supplier_id: integer('supplier').references(() => suppliers.id).notNull(),
         unit: countingUnitEnum('unit').default('Number').notNull(),
         categoryId: integer('category_id').references(() => categories.id, {
             onDelete: 'set null',
@@ -96,12 +122,12 @@ export const parts = pgTable(
         // brandId: integer('brand_id').references(() => carBrands.id, {
         //     onDelete: 'set null',
         // }),
-        status: statusEnum('status_part').default('Active').notNull(),
+        status: statusEnum('status').default('Active').notNull(),
         isFeatured: boolean('is_featured').default(false).notNull(), // نمایش در ویژه‌ها
         metaTitle: varchar('meta_title', { length: 200 }), // عنوان سئو
         metaDescription: varchar('meta_description', { length: 400 }), // توضیحات سئو
         createdAt: timestamp('created_at').defaultNow().notNull(),
-        updatedAt: timestamp('update_at').defaultNow().notNull(),
+        updatedAt: timestamp('updated_at').defaultNow().notNull(),
     },
     (table) => [
         uniqueIndex('parts_slug_unique').on(table.slug),
@@ -111,16 +137,6 @@ export const parts = pgTable(
         index('parts_part_number_idx').on(table.partNumber),
     ],
 );
-///////////////////////////////////////////////
-export const discounts = pgTable('discount', {
-    id: serial('id').primaryKey(),
-    name: varchar('name', { length: 20 }).notNull(),
-    amount: integer('amount').notNull(),
-    discountType: discountTypeEnum('discountType').default('percentage').notNull(),
-    status: statusEnum(status).default('Active').notNull(),
-    createdAt: timestamp('created_at').defaultNow().notNull(),
-    updatedAt: timestamp('update_at').defaultNow().notNull(),
-})
 ///////////////////////////////////////////////
 export const productImages = pgTable(
     'product_images',
@@ -147,7 +163,7 @@ export const partCompatibility = pgTable(
             .references(() => carModels.id, { onDelete: 'cascade' })
             .notNull(),
         yearsNote: varchar('years_note', { length: 40 }).default('').notNull(), // مثل «2018-2022»
-        engineCode: varchar('engine_code', { length: 60 }), // کد موتور اگر مشخص باشد
+        // engineCode: varchar('engine_code', { length: 60 }), // کد موتور اگر مشخص باشد
     },
     (table) => [
         uniqueIndex('part_compat_unique').on(
@@ -159,23 +175,6 @@ export const partCompatibility = pgTable(
     ],
 );
 
-///////////////////////////////////////////////
-
-export const suppliers = pgTable('suppliers',
-    {
-        id: serial('id').primaryKey(),
-        supplierName: varchar('supplier_name', { length: 40 }).notNull(),
-        supplierType: supplierTypeEnum('supplier_type').default('Distributor').notNull(),
-        ContactPersonName: varchar('contact_person_name', { length: 20 }).notNull(),
-        nationalCode: varchar('national_code', { length: 11 }).notNull(),
-        phoneNumber: integer('phone_nubmer').notNull(),
-        BankAccountNumber: integer('Bank_account_number').notNull(),
-        score: integer('score').notNull(),
-        status: statusEnum('status_user').default('Active').notNull(),
-        cooperationStartDate: timestamp('cooperation_start_date').defaultNow().notNull(),
-        description: text('description').notNull()
-    },
-);
 
 // ------------------------------------------------------------------
 // پیام‌های صفحه تماس با ما
@@ -206,7 +205,7 @@ export const banners = pgTable(
         sortOrder: integer('sort_order').default(0).notNull(),
         isActive: boolean('is_active').default(true).notNull(),
         createdAt: timestamp('created_at').defaultNow().notNull(),
-        updatedAt: timestamp('created_at').defaultNow().notNull(),
+        updatedAt: timestamp('updated_at').defaultNow().notNull(),
     },
     (table) => [index('banners_placement_idx').on(table.isActive)],
 );
@@ -214,8 +213,8 @@ export const banners = pgTable(
 
 export const users = pgTable('users', {
     id: serial("id").primaryKey(),
-    firstName: varchar("first_name", { length: 20 }).notNull(),
-    lastName: varchar("last_name", { length: 20 }).notNull(),
+    firstName: varchar("first_name", { length: 50 }).notNull(),
+    lastName: varchar("last_name", { length: 50 }).notNull(),
     email: varchar('email', { length: 255 }).unique().notNull(),
     phone: varchar('phone', { length: 11 }).unique().notNull(),
     nationalCode: varchar('national_code', { length: 10 }).notNull(),
@@ -223,8 +222,7 @@ export const users = pgTable('users', {
     password: varchar('password', { length: 255 }).notNull(),
     role: roleEnum('role').default('User').notNull(),
     createdAt: timestamp('created_at').defaultNow().notNull(),
-    updatedAt: timestamp('created_at').defaultNow().notNull(),
-    deletedAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().notNull(),
 },
     (table) => [
         uniqueIndex('users_email_unique').on(table.email),
@@ -239,15 +237,15 @@ export const addresses = pgTable(
         userId: integer('user_id')
             .references(() => users.id, { onDelete: 'cascade' })
             .notNull(),
-        receiverName: varchar('receiver_name', { length: 120 }).notNull(), // نام گیرنده
+        receiverName: varchar('receiver_name', { length: 50 }).notNull(), // نام گیرنده
         receiverPhone: varchar('receiver_phone', { length: 11 }).notNull(), // موبایل گیرنده
         province: varchar('province', { length: 50 }).notNull(), // استان (یکی از ۳۱ استان ایران)
-        city: varchar('city', { length: 60 }).notNull(), // شهر (وابسته به استان)
+        city: varchar('city', { length: 50 }).notNull(), // شهر (وابسته به استان)
         postalCode: varchar('postal_code', { length: 10 }).notNull(), // کد پستی دقیقاً ۱۰ رقم
         line: text('line').notNull(), // آدرس محلی کامل
         isDefault: boolean('is_default').default(false).notNull(),
         createdAt: timestamp('created_at').defaultNow().notNull(),
-        updatedAt: timestamp('created_at').defaultNow().notNull(),
+        updatedAt: timestamp('updated_at').defaultNow().notNull(),
     },
     (table) => [index('addresses_user_idx').on(table.userId)],
 );
@@ -270,7 +268,7 @@ export const orders = pgTable(
         receiverName: varchar('receiver_name', { length: 120 }).notNull(),
         receiverPhone: varchar('receiver_phone', { length: 11 }).notNull(),
         province: varchar('province', { length: 50 }).notNull(),
-        city: varchar('city', { length: 60 }).notNull(),
+        city: varchar('city', { length: 50 }).notNull(),
         postalCode: varchar('postal_code', { length: 10 }).notNull(),
         addressLine: text('address_line').notNull(),
         note: text('note'), // توضیحات سفارش (اختیاری)
@@ -280,7 +278,7 @@ export const orders = pgTable(
         shippingCost: integer('shipping_cost').default(0).notNull(),
         totalAmount: integer('total_amount').default(0).notNull(),
         // couponCode: varchar('coupon_code', { length: 40 }),
-        trackingCode: varchar('tracking_code', { length: 60 }), // کد رهگیری پست
+        trackingCode: varchar('tracking_code', { length: 50 }), // کد رهگیری پست
         createdAt: timestamp('created_at').defaultNow().notNull(),
         updatedAt: timestamp('updated_at').defaultNow().notNull(),
     },
@@ -301,8 +299,9 @@ export const orderItems = pgTable(
             .references(() => parts.id)
             .notNull(),
         partName: varchar('part_name', { length: 180 }).notNull(), // اسنپ‌شات
-        partNumber: varchar('part_number', { length: 60 }), // اسنپ‌شات
+        partNumber: varchar('part_number', { length: 100 }), // اسنپ‌شات
         imageUrl: varchar('image_url', { length: 500 }), // اسنپ‌شات
+        quantity: integer('quantity').default(1).notNull(),
         unitPrice: integer('unit_price').notNull(), // قیمت واحد در لحظه ثبت سفارش
     },
     (table) => [index('order_items_order_idx').on(table.orderId)],
@@ -329,7 +328,7 @@ export const reviews = pgTable(
     ],
 );
 ///////////////////////////////////////////////////////////////////
-export const returnRequest = pgTable('return_request', {
+export const returnRequest = pgTable('return_requests', {
     id: serial('id').primaryKey(),
     orderId: integer('order_id').references(() => orders.id).notNull(),
     userId: integer('user_id').references(() => users.id).notNull(),
@@ -363,6 +362,7 @@ export const shoppingCart = pgTable(
         .references(() => parts.id, { onDelete: 'cascade' })
         .notNull(),
     createdAt: timestamp('created_at').defaultNow().notNull(),
+    quantity: integer('quantity').default(1).notNull(),
 },
-    (table) => [uniqueIndex('wishlist_user_part_unique').on(table.userId, table.partId)],
+    (table) => [uniqueIndex('shopping_cart_user_part_unique').on(table.userId, table.partId)],
 )
