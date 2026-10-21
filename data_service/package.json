@@ -17,7 +17,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "typecript_init": "tsc --init",
-    "index": "node dist/db/index.js",
+    "index": "node dist/index.js",
     "typecheck": "tsc --noEmit",
     "tsc": " tsc"
   },
