@@ -2,6 +2,7 @@
   "name": "api_service",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,5 +10,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.25.0"
+  "packageManager": "pnpm@10.25.0",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.14.6",
+    "@grpc/proto-loader": "^0.8.1",
+    "dotenv": "^18.0.9"
+  }
 }

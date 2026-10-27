@@ -366,3 +366,4 @@ export const shoppingCart = pgTable(
 },
     (table) => [uniqueIndex('shopping_cart_user_part_unique').on(table.userId, table.partId)],
 )
+/////////////////////////////////////////////////////////////////

@@ -19,15 +19,18 @@
     "typecript_init": "tsc --init",
     "index": "node dist/index.js",
     "typecheck": "tsc --noEmit",
-    "tsc": " tsc"
+    "build": " tsc"
   },
   "dependencies": {
+    "@grpc/grpc-js": "^1.14.6",
+    "@grpc/proto-loader": "^0.8.1",
     "cors": "^2.8.6",
     "dotenv": "^18.0.7",
     "drizzle-orm": "^0.45.4",
     "express": "^5.3.0",
     "pg": "^8.23.1",
-    "postgres": "^3.4.9"
+    "postgres": "^3.4.9",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",
