@@ -57,6 +57,13 @@ function addUser(call: grpc.ServerUnaryCall<AddUserRequest, AddUserResponse>, ca
     })
     const parsed = schema.safeParse(user)
     console.log(parsed)
+    if (!parsed.success) {
+        return callBack({
+            code: grpc.status.NOT_FOUND,
+            message: "User not found",
+        });
+    }
+    return callBack(null, { statusMessage: "data recieve" });
     // const { password, ...values } = parsed.data
 
 }
