@@ -35,37 +35,25 @@ interface AddUserResponse {
     statusMessage: string,
 }
 
-interface User {
-    firstName: string,
-    lastName: string,
-    email: string,
+interface GetUserRequest {
     phone: string,
-    nationalCode: string,
     password: string
+}
+
+interface GetUserResponse {
+    isRegister: boolean
 }
 
 
 function addUser(call: grpc.ServerUnaryCall<AddUserRequest, AddUserResponse>, callBack: grpc.sendUnaryData<AddUserResponse>): void {
     const user = call.request;
-    const schema = z.object({
-        firstName: z.string().min(2, 'نام باید حداقل ۲ حرف باشد').max(60),
-        lastName: z.string().min(2, 'نام خانوادگی باید حداقل ۲ حرف باشد').max(60),
-        email: z.string().email('ایمیل معتبر نیست').max(150),
-        phone: z.string().regex(/^09\d{9}$/, 'شماره موبایل باید با ۰۹ شروع شده و ۱۱ رقم باشد'),
-        password: z.string().min(6, 'رمز عبور باید حداقل ۶ کاراکتر باشد').max(100),
-        role: z.enum(['Super_Admin', 'Super', 'User']).default('User'),
-    })
-    const parsed = schema.safeParse(user)
-    console.log(parsed)
-    if (!parsed.success) {
-        return callBack({
-            code: grpc.status.NOT_FOUND,
-            message: "User not found",
-        });
-    }
+    // console.log(user)
     return callBack(null, { statusMessage: "data recieve" });
-    // const { password, ...values } = parsed.data
+}
 
+function getUser(call: grpc.ServerUnaryCall<GetUserRequest, GetUserResponse>, callBack: grpc.sendUnaryData<GetUserResponse>): void {
+    const user = call.request
+    return callBack(null, { isRegister: true })
 }
 
 
@@ -74,6 +62,7 @@ const server = new grpc.Server();
 
 server.addService(proto.UserService.service, {
     AddUser: addUser,
+    GetUser: getUser
 });
 
 server.bindAsync(

@@ -1,60 +1,29 @@
 import 'dotenv/config'
 import * as grpc from '@grpc/grpc-js'
 import * as protoLoader from '@grpc/proto-loader'
-import path from 'node:path'
+import path from 'node:path';
 import { fileURLToPath } from "node:url";
+import z from 'zod'
+import auth from './routes/auth.routes.js'
+// import express from 'express';
+import express, {
+    type Request,
+    type Response,
+    type NextFunction,
+} from "express";
+
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const PROTO_PATH = path.join(__dirname, "..", "..", "grpc_data_api.proto");
 
-const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
-    keepCase: true,
-    longs: String,
-    enums: String,
-    defaults: true,
-    oneofs: true,
-});
-
-const proto = grpc.loadPackageDefinition(packageDefinition).user as any;
-
-interface AddUserResponse {
-    statusMessage: string,
-}
-
-const client = new proto.UserService(
-    `127.0.0.1:${process.env.PORT}`,
-    grpc.credentials.createInsecure(),
-);
+const app = express()
+const router = express.Router()
 
 
-client.AddUser({
-    firstName: "Mohammadreza",
-    lastName: "Kalali",
-    email: "test@gmail.com",
-    phone: "09919703664",
-    nationalCode: "0926715178",
-    password: "12345678"
-}, (error: grpc.ServiceError | null,
-    response: AddUserResponse) => {
-    console.log(response)
+app.use('/auth', auth)
+
+app.listen(process.env.RESTPORT, () => {
+    console.log(`server start on port ${process.env.RESTPORT}`)
 })
-// دریافت یک کاربر
-// client.GetUser({ id: 1 }, (error, response) => {
-//     if (error) {
-//         console.error("GetUser error:", error.message);
-//         return;
-//     }
-
-//     console.log("User:", response);
-// });
-
-// // دریافت فهرست کاربران
-// client.ListUsers({}, (error, response) => {
-//     if (error) {
-//         console.error("ListUsers error:", error.message);
-//         return;
-//     }
-
-// console.log("Users:", response.users);
-// });

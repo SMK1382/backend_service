@@ -4,6 +4,7 @@ package user;
 
 service UserService {
   rpc AddUser (AddUserRequest) returns (AddUserResponse);
+  rpc GetUser (GetUserRequest) returns (GetUserResponse);
 }
 
 message AddUserRequest {
@@ -17,4 +18,13 @@ message AddUserRequest {
 
 message AddUserResponse {
   string statusMessage = 1;
+}
+
+message GetUserRequest {
+  string phone = 1;
+  string password = 2;
+}
+
+message GetUserResponse {
+  bool isRegister = 1;
 }
