@@ -5,6 +5,8 @@ package user;
 service UserService {
   rpc AddUser (AddUserRequest) returns (AddUserResponse);
   rpc GetUser (GetUserRequest) returns (GetUserResponse);
+  rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse);
+  rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse);
 }
 
 message AddUserRequest {
@@ -13,7 +15,6 @@ message AddUserRequest {
   string email = 3;
   string phone = 4;
   string nationalCode = 5;
-  string password = 6;
 }
 
 message AddUserResponse {
@@ -22,9 +23,25 @@ message AddUserResponse {
 
 message GetUserRequest {
   string phone = 1;
-  string password = 2;
 }
 
 message GetUserResponse {
   bool isRegister = 1;
+}
+
+
+message UpdateUserRequest {
+  string phone = 1;
+}
+
+message UpdateUserResponse {
+  string statusMessage = 1;
+}
+
+message DeleteUserRequest {
+  string phone = 1;
+}
+
+message DeleteUserResponse {
+  string statusMessage = 1;
 }

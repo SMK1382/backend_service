@@ -14,10 +14,6 @@ import express, {
 
 
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const PROTO_PATH = path.join(__dirname, "..", "..", "grpc_data_api.proto");
-
 const app = express()
 const router = express.Router()
 

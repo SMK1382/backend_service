@@ -55,7 +55,7 @@ export const categories = pgTable(
         updatedAt: timestamp('updated_at').defaultNow().notNull(),
     },
     (table) => [
-        uniqueIndex('categories_slug_unique').on(table.slug),
+        // uniqueIndex('categories_slug_unique').on(table.slug),
         index('categories_parent_idx').on(table.parentId),
     ],
 );
@@ -219,15 +219,14 @@ export const users = pgTable('users', {
     phone: varchar('phone', { length: 11 }).unique().notNull(),
     nationalCode: varchar('national_code', { length: 10 }).notNull(),
     status: statusEnum('status').default('Active').notNull(),
-    password: varchar('password', { length: 255 }).notNull(),
     role: roleEnum('role').default('User').notNull(),
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at').defaultNow().notNull(),
 },
-    (table) => [
-        uniqueIndex('users_email_unique').on(table.email),
-        uniqueIndex('users_phone_unique').on(table.phone),
-    ]
+    // (table) => [
+    //     uniqueIndex('users_email_unique').on(table.email),
+    //     uniqueIndex('users_phone_unique').on(table.phone),
+    // ]
 )
 
 export const addresses = pgTable(
@@ -367,3 +366,4 @@ export const shoppingCart = pgTable(
     (table) => [uniqueIndex('shopping_cart_user_part_unique').on(table.userId, table.partId)],
 )
 /////////////////////////////////////////////////////////////////
+// export type User = typeof users.$inferSelect;
