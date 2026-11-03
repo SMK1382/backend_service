@@ -1,6 +1,6 @@
 import express, { type Request, type Response } from 'express'
 import z from 'zod'
-import client, { type AddUserResponse, type GetUserResponse, type UpdateUserResponse, type DeleteUserResponse } from '../grpc/auth.user.grpc.js'
+import client, { type AddUserResponse, type ListUsersResponse, type GetUserResponse, type UpdateUserResponse, type DeleteUserResponse } from '../grpc/auth.grpc.js'
 import * as grpc from '@grpc/grpc-js'
 
 
@@ -13,25 +13,21 @@ router.post('/register', (req: Request, res: Response) => {
         lastName: z.string().min(2, 'نام خانوادگی باید حداقل ۲ حرف باشد').max(60),
         email: z.string().email('ایمیل معتبر نیست').max(150),
         phone: z.string().regex(/^09\d{9}$/, 'شماره موبایل باید با ۰۹ شروع شده و ۱۱ رقم باشد'),
-        role: z.enum(['Super_Admin', 'Super', 'User']).default('User'),
+        nationalCode: z.string().min(10, 'کد ملی باید ۱۰ رقم باشد').max(10)
     })
-    const user = {
-        firstName: "Mohammadreza",
-        lastName: "Kalali",
-        email: "test@gmail.com",
-        phone: "09919703664",
-        nationalCode: "0926715178",
-    }
-    const parsed = schema.safeParse(user)
+    const parsed = schema.safeParse(req.body)
     if (parsed.success) {
-        client.AddUser(user, (error: grpc.ServiceError | null,
-            response: AddUserResponse) => {
-                // console.log("addUser callback")
-            return res.json(response)
+        client.AddUser(parsed.data, (error: grpc.ServiceError | null, response: AddUserResponse) => {
+            if (response) {
+                return res.json(response)
+            }
+            else {
+                return res.json(error)
+            }
         })
     }
     else {
-        return res.json({ "ERROR": 401 })
+        return res.json({ "ERROR": parsed.error })
     }
 })
 
@@ -39,16 +35,21 @@ router.post('/login', (req: Request, res: Response) => {
     const schema = z.object({
         phone: z.string().regex(/^09\d{9}$/, 'شماره موبایل باید با ۰۹ شروع شده و ۱۱ رقم باشد'),
     })
-    const test = { phone: "09919703664" }
-    const parsed = schema.safeParse(test)
+    // console.log(req.body)
+    const parsed = schema.safeParse(req.body)
     if (parsed.success) {
         // console.log(parsed)
         client.GetUser(parsed.data, (error: grpc.ServiceError | null, response: GetUserResponse) => {
-            return res.json(response)
+            if (response) {
+                return res.json(response)
+            }
+            else {
+                return res.json(error)
+            }
         })
     }
     else {
-        return res.json({ "ERROR": 401 })
+        return res.json({ "ERROR": parsed.error })
     }
 })
 
@@ -60,7 +61,12 @@ router.post('/update', (req: Request, res: Response) => {
     const parsed = schema.safeParse(test)
     if (parsed.success) {
         client.updateUser(parsed.data, (error: grpc.ServiceError | null, response: UpdateUserResponse) => {
-            return res.json(response)
+            if (response) {
+                return res.json(response)
+            }
+            else {
+                return res.json(error)
+            }
         })
     }
     else {
@@ -76,7 +82,12 @@ router.post('/delete', (req: Request, res: Response) => {
     const parsed = schema.safeParse(test)
     if (parsed.success) {
         client.deleteUser(parsed.data, (error: grpc.ServiceError | null, response: DeleteUserResponse) => {
-            return res.json(response)
+            if (response) {
+                return res.json(response)
+            }
+            else {
+                return res.json(error)
+            }
         })
     }
     else {
@@ -84,5 +95,15 @@ router.post('/delete', (req: Request, res: Response) => {
     }
 })
 
+router.post('/list', (req, res) => {
+    client.ListUsers({}, (error: grpc.ServiceError | null, response: ListUsersResponse) => {
+        if (response) {
+            return res.json(response)
+        }
+        else {
+            return res.json(error)
+        }
+    })
+})
 
 export default router

@@ -220,12 +220,12 @@ CREATE TABLE "users" (
 	"phone" varchar(11) NOT NULL,
 	"national_code" varchar(10) NOT NULL,
 	"status" "status" DEFAULT 'Active' NOT NULL,
-	"password" varchar(255) NOT NULL,
 	"role" "userRole" DEFAULT 'User' NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	CONSTRAINT "users_email_unique" UNIQUE("email"),
-	CONSTRAINT "users_phone_unique" UNIQUE("phone")
+	CONSTRAINT "users_phone_unique" UNIQUE("phone"),
+	CONSTRAINT "users_national_code_unique" UNIQUE("national_code")
 );
 --> statement-breakpoint
 CREATE TABLE "wishlist" (

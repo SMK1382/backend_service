@@ -10,34 +10,44 @@ const PROTO_PATH = path.join(__dirname, "..", "..", "..", "proto", "user.proto")
 // console.log(PROTO_PATH)
 
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
-    keepCase: true,
-    longs: String,
-    enums: String,
-    defaults: true,
-    oneofs: true,
+  keepCase: true,
+  longs: String,
+  enums: String,
+  defaults: true,
+  oneofs: true,
 });
 
 const userProto = grpc.loadPackageDefinition(packageDefinition) as any;
 
 export interface AddUserResponse {
-    statusMessage: string,
+  statusMessage: string,
 }
 
 export interface GetUserResponse {
-    isRegister: boolean
+  firstName: string,
+  lastName: string,
+  email: string,
+  phone: string,
+  nationalCode: string,
+  status: string,
+  role: string
+}
+
+export interface ListUsersResponse {
+  users: GetUserResponse[]
 }
 
 export interface UpdateUserResponse {
-  statusMessage : string
+  statusMessage: string
 }
 
 export interface DeleteUserResponse {
-  statusMessage : string
+  statusMessage: string
 }
 
 const client = new userProto.user.UserService(
-    `127.0.0.1:${process.env.GRPCPORT}`,
-    grpc.credentials.createInsecure(),
+  `127.0.0.1:${process.env.GRPCPORT}`,
+  grpc.credentials.createInsecure(),
 );
 
 export default client

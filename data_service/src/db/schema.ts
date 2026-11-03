@@ -217,7 +217,7 @@ export const users = pgTable('users', {
     lastName: varchar("last_name", { length: 50 }).notNull(),
     email: varchar('email', { length: 255 }).unique().notNull(),
     phone: varchar('phone', { length: 11 }).unique().notNull(),
-    nationalCode: varchar('national_code', { length: 10 }).notNull(),
+    nationalCode: varchar('national_code', { length: 10 }).unique().notNull(),
     status: statusEnum('status').default('Active').notNull(),
     role: roleEnum('role').default('User').notNull(),
     createdAt: timestamp('created_at').defaultNow().notNull(),

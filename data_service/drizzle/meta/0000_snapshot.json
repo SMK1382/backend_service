@@ -1,5 +1,5 @@
 {
-  "id": "48a66b63-1afd-41d4-95bf-6be54be862e2",
+  "id": "a0d9ec95-bc40-4760-873e-99f582fb097d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -1832,12 +1832,6 @@
           "notNull": true,
           "default": "'Active'"
         },
-        "password": {
-          "name": "password",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        },
         "role": {
           "name": "role",
           "type": "userRole",
@@ -1877,6 +1871,13 @@
           "nullsNotDistinct": false,
           "columns": [
             "phone"
+          ]
+        },
+        "users_national_code_unique": {
+          "name": "users_national_code_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "national_code"
           ]
         }
       },

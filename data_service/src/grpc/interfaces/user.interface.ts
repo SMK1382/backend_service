@@ -4,7 +4,6 @@ export interface AddUserRequest {
     email: string,
     phone: string,
     nationalCode: string,
-    password: string
 }
 
 export interface AddUserResponse {
@@ -16,9 +15,21 @@ export interface GetUserRequest {
 }
 
 export interface GetUserResponse {
-    isRegister: boolean
+    firstName: string,
+    lastName: string,
+    email: string,
+    phone: string,
+    nationalCode: string,
+    status: string,
+    role: string
 }
 
+export interface ListUsersRequest { }
+export interface ListUsersResponse {
+    users: GetUserResponse[]
+}
+
+// export type GetUsersResponse = Array<GetUserResponse>
 export interface UpdateUserRequest {
     phone: string,
 }
@@ -32,5 +43,5 @@ export interface DeleteUserRequest {
 }
 
 export interface DeleteUserResponse {
-  statusMessage : string
+    statusMessage: string
 }

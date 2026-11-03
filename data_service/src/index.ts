@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import * as grpc from '@grpc/grpc-js'
-import { userPackageDefinition, getUser, addUser, updateUser, deleteUser } from './grpc/user.grpc.js';
+import { userPackageDefinition, addUser, getUser, ListUsers, updateUser, deleteUser } from './grpc/user.grpc.js';
 
 const userProto = grpc.loadPackageDefinition(userPackageDefinition) as any
 
@@ -12,6 +12,7 @@ const server = new grpc.Server();
 server.addService(userProto.user.UserService.service, {
     AddUser: addUser,
     GetUser: getUser,
+    ListUsers: ListUsers,
     UpdateUser: updateUser,
     DeleteUser: deleteUser
 });
