@@ -42,8 +42,11 @@ router.post('/login', (req: Request, res: Response) => {
         client.GetUser(parsed.data, (error: grpc.ServiceError | null, response: GetUserResponse) => {
             if (response) {
                 return res.json(response)
+                // console.log(response)
             }
             else {
+                console.log(error)
+
                 return res.json(error)
             }
         })
@@ -56,9 +59,14 @@ router.post('/login', (req: Request, res: Response) => {
 router.post('/update', (req: Request, res: Response) => {
     const schema = z.object({
         phone: z.string().regex(/^09\d{9}$/, 'شماره موبایل باید با ۰۹ شروع شده و ۱۱ رقم باشد'),
+        firstName: z.string().min(2, 'نام باید حداقل ۲ حرف باشد').max(60).optional(),
+        lastName: z.string().min(2, 'نام خانوادگی باید حداقل ۲ حرف باشد').max(60).optional(),
+        email: z.string().email('ایمیل معتبر نیست').max(150).optional(),
+        status: z.enum(["Active", "Inactive"]).optional(),
+        role: z.enum(['Super_Admin', 'Super', 'User']).optional()
     })
-    const test = { phone: "09919703664" }
-    const parsed = schema.safeParse(test)
+    // const test = { phone: "09919703664" }
+    const parsed = schema.safeParse(req.body)
     if (parsed.success) {
         client.updateUser(parsed.data, (error: grpc.ServiceError | null, response: UpdateUserResponse) => {
             if (response) {
@@ -70,7 +78,7 @@ router.post('/update', (req: Request, res: Response) => {
         })
     }
     else {
-        return res.json({ "ERROR": 401 })
+        return res.json({ "ERROR": parsed.error })
     }
 })
 
@@ -78,8 +86,8 @@ router.post('/delete', (req: Request, res: Response) => {
     const schema = z.object({
         phone: z.string().regex(/^09\d{9}$/, 'شماره موبایل باید با ۰۹ شروع شده و ۱۱ رقم باشد'),
     })
-    const test = { phone: "09919703664" }
-    const parsed = schema.safeParse(test)
+    // const test = { phone: "09919703664" }
+    const parsed = schema.safeParse(req.body)
     if (parsed.success) {
         client.deleteUser(parsed.data, (error: grpc.ServiceError | null, response: DeleteUserResponse) => {
             if (response) {
@@ -91,7 +99,7 @@ router.post('/delete', (req: Request, res: Response) => {
         })
     }
     else {
-        return res.json({ "ERROR": 401 })
+        return res.json({ "ERROR": parsed.error })
     }
 })
 

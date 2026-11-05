@@ -19,18 +19,18 @@ import db from '../db/index.js'
 import { users } from '../db/schema.js';
 import {
     eq,
-    ne,
-    gt,
-    gte,
-    lt,
-    lte,
-    like,
-    ilike,
-    and,
-    or,
-    inArray,
-    isNull,
-    isNotNull,
+    // ne,
+    // gt,
+    // gte,
+    // lt,
+    // lte,
+    // like,
+    // ilike,
+    // and,
+    // or,
+    // inArray,
+    // isNull,
+    // isNotNull,
 } from "drizzle-orm";
 
 
@@ -63,17 +63,10 @@ export async function addUser(call: grpc.ServerUnaryCall<AddUserRequest, AddUser
 export async function getUser(call: grpc.ServerUnaryCall<GetUserRequest, GetUserResponse>, callBack: grpc.sendUnaryData<GetUserResponse>) {
     const phone = call.request
 
-    const user = await db.select().from(users).where(eq(users.phone, phone.phone))
-    if (phone) {
-        return callBack(null, {
-            firstName: "Mohammadreza",
-            lastName: "Kalali",
-            email: "kalalimohammad1382@gmail.com",
-            phone: "09919703664",
-            nationalCode: "9303823820",
-            status: "Active",
-            role: "User"
-        })
+    const user: GetUserResponse[] = await db.select().from(users).where(eq(users.phone, phone.phone))
+    // console.log(user)
+    if (user) {
+        return callBack(null, user[0])
     }
     return callBack({
         code: grpc.status.NOT_FOUND,
@@ -82,7 +75,7 @@ export async function getUser(call: grpc.ServerUnaryCall<GetUserRequest, GetUser
 }
 
 export async function ListUsers(call: grpc.ServerUnaryCall<ListUsersRequest, ListUsersResponse>, callBack: grpc.sendUnaryData<ListUsersResponse>) {
-    const userList = await db
+    const userList : GetUserResponse[]= await db
         .select()
         .from(users)
     if (userList) {
@@ -91,9 +84,20 @@ export async function ListUsers(call: grpc.ServerUnaryCall<ListUsersRequest, Lis
         })
     }
 }
-export function updateUser(call: grpc.ServerUnaryCall<UpdateUserRequest, UpdateUserResponse>, callBack: grpc.sendUnaryData<UpdateUserResponse>) {
-    const phone = call.request
-    if (phone) {
+export async function updateUser(call: grpc.ServerUnaryCall<UpdateUserRequest, UpdateUserResponse>, callBack: grpc.sendUnaryData<UpdateUserResponse>) {
+    const data = call.request
+    const user: Array<GetUserResponse> = await db.select().from(users).where(eq(users.phone, data.phone))
+    const result = await db
+        .update(users)
+        .set({
+            firstName: data.firstName || user[0]?.firstName,
+            lastName: data.lastName || user[0]?.lastName,
+            email: data.email || user[0]?.email,
+            status: data.status || user[0]?.status,
+            role: data.role || user[0]?.role
+        })
+        .where(eq(users.phone, data.phone));
+    if (result) {
         return callBack(null, { statusMessage: "user updated" })
     }
     return callBack({
@@ -102,9 +106,13 @@ export function updateUser(call: grpc.ServerUnaryCall<UpdateUserRequest, UpdateU
     })
 }
 
-export function deleteUser(call: grpc.ServerUnaryCall<DeleteUserRequest, DeleteUserResponse>, callBack: grpc.sendUnaryData<DeleteUserResponse>) {
-    const phone = call.request
-    if (phone) {
+export async function deleteUser(call: grpc.ServerUnaryCall<DeleteUserRequest, DeleteUserResponse>, callBack: grpc.sendUnaryData<DeleteUserResponse>) {
+    const data : DeleteUserRequest = call.request
+    const result = await db
+  .delete(users)
+  .where(eq(users.phone, data.phone));
+  console.log(result)
+    if (result) {
         return callBack(null, { statusMessage: "user deleted" })
     }
     return callBack({

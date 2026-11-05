@@ -48,6 +48,11 @@ message ListUsersResponse {
 
 message UpdateUserRequest {
   string phone = 1;
+  string firstName = 2;
+  string lastName = 3;
+  string email = 4;
+  string status = 5;
+  string role = 6;
 }
 
 message UpdateUserResponse {

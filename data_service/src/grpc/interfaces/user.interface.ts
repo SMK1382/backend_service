@@ -32,6 +32,11 @@ export interface ListUsersResponse {
 // export type GetUsersResponse = Array<GetUserResponse>
 export interface UpdateUserRequest {
     phone: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    status: "Active" | "Inactive",
+    role: 'Super_Admin' | 'Super' | 'User',
 }
 
 export interface UpdateUserResponse {
