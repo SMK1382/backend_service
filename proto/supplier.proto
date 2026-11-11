@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package supplier;
+
+service SupplierService {
+  rpc AddSupplier (AddSupplierRequest) returns (AddSupplierResponse);
+  rpc GetSupplier (GetSupplierRequest) returns (GetSupplierResponse);
+  rpc ListSuppliers (ListSuppliersRequest) returns (ListSuppliersResponse);
+  rpc UpdateSupplier (UpdateSupplierRequest) returns (UpdateSupplierResponse);
+  rpc DeleteSupplier (DeleteSupplierRequest) returns (DeleteSupplierResponse);
+}
+
+
+message AddSupplierRequest {
+  string supplierName = 1;
+  string supplierType = 2;
+  string contactPersonName = 3;
+  string nationalCode = 4;
+  string phoneNumber = 5;
+  string bankAccountNumber = 6;
+  int32 score = 7;
+  string status = 8;
+  string description = 9;
+}
+
+message AddSupplierResponse {
+  string statusMessage = 1;
+}
+
+
+message GetSupplierRequest {
+  int32 id = 1;
+}
+
+message GetSupplierResponse {
+  int32 id = 1;
+  string supplierName = 2;
+  string supplierType = 3;
+  string contactPersonName = 4;
+  string nationalCode = 5;
+  string phoneNumber = 6;
+  string bankAccountNumber = 7;
+  int32 score = 8;
+  string status = 9;
+  string description = 10;
+}
+
+message ListSuppliersRequest {}
+
+message ListSuppliersResponse {
+  repeated GetSupplierResponse suppliers = 1;
+}
+
+
+message UpdateSupplierRequest {
+  int32 id = 1;
+  string supplierName = 2;
+  string supplierType = 3;
+  string contactPersonName = 4;
+  string nationalCode = 5;
+  string phoneNumber = 6;
+  string bankAccountNumber = 7;
+  int32 score = 8;
+  string status = 9;
+  string description = 10;
+}
+
+message UpdateSupplierResponse {
+  string statusMessage = 1;
+}
+
+
+message DeleteSupplierRequest {
+  int32 id = 1;
+}
+
+message DeleteSupplierResponse {
+  string statusMessage = 1;
+}

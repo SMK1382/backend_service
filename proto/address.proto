@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package address;
+
+service AddressService {
+  rpc AddAddress (AddAddressRequest) returns (AddAddressResponse);
+  rpc GetAddress (GetAddressRequest) returns (GetAddressResponse);
+  rpc ListAddresses (ListAddressesRequest) returns (ListAddressesResponse);
+  rpc UpdateAddress (UpdateAddressRequest) returns (UpdateAddressResponse);
+  rpc DeleteAddress (DeleteAddressRequest) returns (DeleteAddressResponse);
+}
+
+
+message AddAddressRequest {
+  int32 userId = 1;
+  string receiverName = 2;
+  string receiverPhone = 3;
+  string province = 4;
+  string city = 5;
+  string postalCode = 6;
+  string line = 7;
+}
+
+message AddAddressResponse {
+  string statusMessage = 1;
+}
+
+
+message GetAddressRequest {
+  int32 id = 1;
+}
+
+message GetAddressResponse {
+  int32 id = 1;
+  int32 userId = 2;
+  string receiverName = 3;
+  string receiverPhone = 4;
+  string province = 5;
+  string city = 6;
+  string postalCode = 7;
+  string line = 8;
+  bool isDefault = 9;
+}
+
+message ListAddressesRequest {}
+
+message ListAddressesResponse {
+  repeated GetAddressResponse addresses = 1;
+}
+
+
+message UpdateAddressRequest {
+  int32 id = 1;
+  int32 userId = 2;
+  string receiverName = 3;
+  string receiverPhone = 4;
+  string province = 5;
+  string city = 6;
+  string postalCode = 7;
+  string line = 8;
+  bool isDefault = 9;
+}
+
+message UpdateAddressResponse {
+  string statusMessage = 1;
+}
+
+
+message DeleteAddressRequest {
+  int32 id = 1;
+}
+
+message DeleteAddressResponse {
+  string statusMessage = 1;
+}

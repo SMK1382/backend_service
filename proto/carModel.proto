@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package carModel;
+
+service CarModelService {
+  rpc AddCarModel (AddCarModelRequest) returns (AddCarModelResponse);
+  rpc GetCarModel (GetCarModelRequest) returns (GetCarModelResponse);
+  rpc ListCarModels (ListCarModelsRequest) returns (ListCarModelsResponse);
+  rpc UpdateCarModel (UpdateCarModelRequest) returns (UpdateCarModelResponse);
+  rpc DeleteCarModel (DeleteCarModelRequest) returns (DeleteCarModelResponse);
+}
+
+
+message AddCarModelRequest {
+  string nameFa = 1;
+  string nameEn = 2;
+  int32 brandId = 3;
+  int32 yearOfManufacture = 4;
+}
+
+message AddCarModelResponse {
+  string statusMessage = 1;
+}
+
+
+message GetCarModelRequest {
+  int32 id = 1;
+}
+
+message GetCarModelResponse {
+  int32 id = 1;
+  string nameFa = 2;
+  string nameEn = 3;
+  int32 brandId = 4;
+  int32 yearOfManufacture = 5;
+}
+
+message ListCarModelsRequest {}
+
+message ListCarModelsResponse {
+  repeated GetCarModelResponse carModels = 1;
+}
+
+
+message UpdateCarModelRequest {
+  int32 id = 1;
+  string nameFa = 2;
+  string nameEn = 3;
+  int32 brandId = 4;
+  int32 yearOfManufacture = 5;
+}
+
+message UpdateCarModelResponse {
+  string statusMessage = 1;
+}
+
+
+message DeleteCarModelRequest {
+  int32 id = 1;
+}
+
+message DeleteCarModelResponse {
+  string statusMessage = 1;
+}

@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package partBrand;
+
+service PartBrandService {
+  rpc AddPartBrand (AddPartBrandRequest) returns (AddPartBrandResponse);
+  rpc GetPartBrand (GetPartBrandRequest) returns (GetPartBrandResponse);
+  rpc ListPartBrands (ListPartBrandsRequest) returns (ListPartBrandsResponse);
+  rpc UpdatePartBrand (UpdatePartBrandRequest) returns (UpdatePartBrandResponse);
+  rpc DeletePartBrand (DeletePartBrandRequest) returns (DeletePartBrandResponse);
+}
+
+
+message AddPartBrandRequest {
+  string name = 1;
+  string slug = 2;
+  string countryOfOrigin = 3;
+  string description = 4;
+  string status = 5;
+}
+
+message AddPartBrandResponse {
+  string statusMessage = 1;
+}
+
+
+message GetPartBrandRequest {
+  int32 id = 1;
+}
+
+message GetPartBrandResponse {
+  int32 id = 1;
+  string name = 2;
+  string slug = 3;
+  string countryOfOrigin = 4;
+  string description = 5;
+  string status = 6;
+}
+
+message ListPartBrandsRequest {}
+
+message ListPartBrandsResponse {
+  repeated GetPartBrandResponse partBrands = 1;
+}
+
+
+message UpdatePartBrandRequest {
+  int32 id = 1;
+  string name = 2;
+  string slug = 3;
+  string countryOfOrigin = 4;
+  string description = 5;
+  string status = 6;
+}
+
+message UpdatePartBrandResponse {
+  string statusMessage = 1;
+}
+
+
+message DeletePartBrandRequest {
+  int32 id = 1;
+}
+
+message DeletePartBrandResponse {
+  string statusMessage = 1;
+}

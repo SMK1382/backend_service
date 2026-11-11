@@ -42,7 +42,6 @@ router.post('/login', (req: Request, res: Response) => {
         client.GetUser(parsed.data, (error: grpc.ServiceError | null, response: GetUserResponse) => {
             if (response) {
                 return res.json(response)
-                // console.log(response)
             }
             else {
                 console.log(error)

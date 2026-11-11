@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package partCompatibility;
+
+service PartCompatibilityService {
+  rpc AddPartCompatibility (AddPartCompatibilityRequest) returns (AddPartCompatibilityResponse);
+  rpc GetPartCompatibility (GetPartCompatibilityRequest) returns (GetPartCompatibilityResponse);
+  rpc ListPartCompatibilities (ListPartCompatibilitiesRequest) returns (ListPartCompatibilitiesResponse);
+  rpc UpdatePartCompatibility (UpdatePartCompatibilityRequest) returns (UpdatePartCompatibilityResponse);
+  rpc DeletePartCompatibility (DeletePartCompatibilityRequest) returns (DeletePartCompatibilityResponse);
+}
+
+
+message AddPartCompatibilityRequest {
+  int32 partId = 1;
+  int32 carModelId = 2;
+  string yearsNote = 3;
+}
+
+message AddPartCompatibilityResponse {
+  string statusMessage = 1;
+}
+
+
+message GetPartCompatibilityRequest {
+  int32 id = 1;
+}
+
+message GetPartCompatibilityResponse {
+  int32 id = 1;
+  int32 partId = 2;
+  int32 carModelId = 3;
+  string yearsNote = 4;
+}
+
+message ListPartCompatibilitiesRequest {}
+
+message ListPartCompatibilitiesResponse {
+  repeated GetPartCompatibilityResponse partCompatibilities = 1;
+}
+
+
+message UpdatePartCompatibilityRequest {
+  int32 id = 1;
+  int32 partId = 2;
+  int32 carModelId = 3;
+  string yearsNote = 4;
+}
+
+message UpdatePartCompatibilityResponse {
+  string statusMessage = 1;
+}
+
+
+message DeletePartCompatibilityRequest {
+  int32 id = 1;
+}
+
+message DeletePartCompatibilityResponse {
+  string statusMessage = 1;
+}

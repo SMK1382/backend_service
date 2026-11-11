@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+package orderItem;
+
+service OrderItemService {
+  rpc AddOrderItem (AddOrderItemRequest) returns (AddOrderItemResponse);
+  rpc GetOrderItem (GetOrderItemRequest) returns (GetOrderItemResponse);
+  rpc ListOrderItems (ListOrderItemsRequest) returns (ListOrderItemsResponse);
+  rpc UpdateOrderItem (UpdateOrderItemRequest) returns (UpdateOrderItemResponse);
+  rpc DeleteOrderItem (DeleteOrderItemRequest) returns (DeleteOrderItemResponse);
+}
+
+
+message AddOrderItemRequest {
+  int32 orderId = 1;
+  int32 partId = 2;
+  string partName = 3;
+  string partNumber = 4;
+  string imageUrl = 5;
+  int32 unitPrice = 6;
+}
+
+message AddOrderItemResponse {
+  string statusMessage = 1;
+}
+
+
+message GetOrderItemRequest {
+  int32 id = 1;
+}
+
+message GetOrderItemResponse {
+  int32 id = 1;
+  int32 orderId = 2;
+  int32 partId = 3;
+  string partName = 4;
+  string partNumber = 5;
+  string imageUrl = 6;
+  int32 quantity = 7;
+  int32 unitPrice = 8;
+}
+
+message ListOrderItemsRequest {}
+
+message ListOrderItemsResponse {
+  repeated GetOrderItemResponse orderItems = 1;
+}
+
+
+message UpdateOrderItemRequest {
+  int32 id = 1;
+  int32 orderId = 2;
+  int32 partId = 3;
+  string partName = 4;
+  string partNumber = 5;
+  string imageUrl = 6;
+  int32 quantity = 7;
+  int32 unitPrice = 8;
+}
+
+message UpdateOrderItemResponse {
+  string statusMessage = 1;
+}
+
+
+message DeleteOrderItemRequest {
+  int32 id = 1;
+}
+
+message DeleteOrderItemResponse {
+  string statusMessage = 1;
+}

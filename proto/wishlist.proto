@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package wishlist;
+
+service WishlistService {
+  rpc AddWishlist (AddWishlistRequest) returns (AddWishlistResponse);
+  rpc GetWishlist (GetWishlistRequest) returns (GetWishlistResponse);
+  rpc ListWishlist (ListWishlistRequest) returns (ListWishlistResponse);
+  rpc UpdateWishlist (UpdateWishlistRequest) returns (UpdateWishlistResponse);
+  rpc DeleteWishlist (DeleteWishlistRequest) returns (DeleteWishlistResponse);
+}
+
+
+message AddWishlistRequest {
+  int32 userId = 1;
+  int32 partId = 2;
+}
+
+message AddWishlistResponse {
+  string statusMessage = 1;
+}
+
+
+message GetWishlistRequest {
+  int32 id = 1;
+}
+
+message GetWishlistResponse {
+  int32 id = 1;
+  int32 userId = 2;
+  int32 partId = 3;
+}
+
+message ListWishlistRequest {}
+
+message ListWishlistResponse {
+  repeated GetWishlistResponse wishlist = 1;
+}
+
+
+message UpdateWishlistRequest {
+  int32 id = 1;
+  int32 userId = 2;
+  int32 partId = 3;
+}
+
+message UpdateWishlistResponse {
+  string statusMessage = 1;
+}
+
+
+message DeleteWishlistRequest {
+  int32 id = 1;
+}
+
+message DeleteWishlistResponse {
+  string statusMessage = 1;
+}

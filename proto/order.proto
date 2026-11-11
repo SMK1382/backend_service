@@ -1,0 +1,100 @@
+syntax = "proto3";
+
+package order;
+
+service OrderService {
+  rpc AddOrder (AddOrderRequest) returns (AddOrderResponse);
+  rpc GetOrder (GetOrderRequest) returns (GetOrderResponse);
+  rpc ListOrders (ListOrdersRequest) returns (ListOrdersResponse);
+  rpc UpdateOrder (UpdateOrderRequest) returns (UpdateOrderResponse);
+  rpc DeleteOrder (DeleteOrderRequest) returns (DeleteOrderResponse);
+}
+
+
+message AddOrderRequest {
+  int32 userId = 1;
+  string status = 2;
+  string paymentMethod = 3;
+  string paymentStatus = 4;
+  string receiverName = 5;
+  string receiverPhone = 6;
+  string province = 7;
+  string city = 8;
+  string postalCode = 9;
+  string addressLine = 10;
+  string note = 11;
+  int32 itemsSubtotal = 12;
+  int32 discountAmount = 13;
+  int32 shippingCost = 14;
+  int32 totalAmount = 15;
+  string trackingCode = 16;
+}
+
+message AddOrderResponse {
+  string statusMessage = 1;
+}
+
+
+message GetOrderRequest {
+  int32 id = 1;
+}
+
+message GetOrderResponse {
+  int32 id = 1;
+  int32 userId = 2;
+  string status = 3;
+  string paymentMethod = 4;
+  string paymentStatus = 5;
+  string receiverName = 6;
+  string receiverPhone = 7;
+  string province = 8;
+  string city = 9;
+  string postalCode = 10;
+  string addressLine = 11;
+  string note = 12;
+  int32 itemsSubtotal = 13;
+  int32 discountAmount = 14;
+  int32 shippingCost = 15;
+  int32 totalAmount = 16;
+  string trackingCode = 17;
+}
+
+message ListOrdersRequest {}
+
+message ListOrdersResponse {
+  repeated GetOrderResponse orders = 1;
+}
+
+
+message UpdateOrderRequest {
+  int32 id = 1;
+  int32 userId = 2;
+  string status = 3;
+  string paymentMethod = 4;
+  string paymentStatus = 5;
+  string receiverName = 6;
+  string receiverPhone = 7;
+  string province = 8;
+  string city = 9;
+  string postalCode = 10;
+  string addressLine = 11;
+  string note = 12;
+  int32 itemsSubtotal = 13;
+  int32 discountAmount = 14;
+  int32 shippingCost = 15;
+  int32 totalAmount = 16;
+  string trackingCode = 17;
+}
+
+message UpdateOrderResponse {
+  string statusMessage = 1;
+}
+
+
+message DeleteOrderRequest {
+  int32 id = 1;
+}
+
+message DeleteOrderResponse {
+  string statusMessage = 1;
+}

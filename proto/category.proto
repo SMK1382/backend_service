@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package category;
+
+service CategoryService {
+  rpc AddCategory (AddCategoryRequest) returns (AddCategoryResponse);
+  rpc GetCategory (GetCategoryRequest) returns (GetCategoryResponse);
+  rpc ListCategories (ListCategoriesRequest) returns (ListCategoriesResponse);
+  rpc UpdateCategory (UpdateCategoryRequest) returns (UpdateCategoryResponse);
+  rpc DeleteCategory (DeleteCategoryRequest) returns (DeleteCategoryResponse);
+}
+
+
+message AddCategoryRequest {
+  string name = 1;
+  string slug = 2;
+  int32 parentId = 3;
+}
+
+message AddCategoryResponse {
+  string statusMessage = 1;
+}
+
+
+message GetCategoryRequest {
+  int32 id = 1;
+}
+
+message GetCategoryResponse {
+  int32 id = 1;
+  string name = 2;
+  string slug = 3;
+  int32 parentId = 4;
+  int32 sortOrder = 5;
+  bool isActive = 6;
+}
+
+message ListCategoriesRequest {}
+
+message ListCategoriesResponse {
+  repeated GetCategoryResponse categories = 1;
+}
+
+
+message UpdateCategoryRequest {
+  int32 id = 1;
+  string name = 2;
+  string slug = 3;
+  int32 parentId = 4;
+  int32 sortOrder = 5;
+  bool isActive = 6;
+}
+
+message UpdateCategoryResponse {
+  string statusMessage = 1;
+}
+
+
+message DeleteCategoryRequest {
+  int32 id = 1;
+}
+
+message DeleteCategoryResponse {
+  string statusMessage = 1;
+}

@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package discount;
+
+service DiscountService {
+  rpc AddDiscount (AddDiscountRequest) returns (AddDiscountResponse);
+  rpc GetDiscount (GetDiscountRequest) returns (GetDiscountResponse);
+  rpc ListDiscounts (ListDiscountsRequest) returns (ListDiscountsResponse);
+  rpc UpdateDiscount (UpdateDiscountRequest) returns (UpdateDiscountResponse);
+  rpc DeleteDiscount (DeleteDiscountRequest) returns (DeleteDiscountResponse);
+}
+
+
+message AddDiscountRequest {
+  string name = 1;
+  int32 amount = 2;
+  string discountType = 3;
+  string status = 4;
+}
+
+message AddDiscountResponse {
+  string statusMessage = 1;
+}
+
+
+message GetDiscountRequest {
+  int32 id = 1;
+}
+
+message GetDiscountResponse {
+  int32 id = 1;
+  string name = 2;
+  int32 amount = 3;
+  string discountType = 4;
+  string status = 5;
+}
+
+message ListDiscountsRequest {}
+
+message ListDiscountsResponse {
+  repeated GetDiscountResponse discounts = 1;
+}
+
+
+message UpdateDiscountRequest {
+  int32 id = 1;
+  string name = 2;
+  int32 amount = 3;
+  string discountType = 4;
+  string status = 5;
+}
+
+message UpdateDiscountResponse {
+  string statusMessage = 1;
+}
+
+
+message DeleteDiscountRequest {
+  int32 id = 1;
+}
+
+message DeleteDiscountResponse {
+  string statusMessage = 1;
+}

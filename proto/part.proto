@@ -1,0 +1,98 @@
+syntax = "proto3";
+
+package part;
+
+service PartService {
+  rpc AddPart (AddPartRequest) returns (AddPartResponse);
+  rpc GetPart (GetPartRequest) returns (GetPartResponse);
+  rpc ListParts (ListPartsRequest) returns (ListPartsResponse);
+  rpc UpdatePart (UpdatePartRequest) returns (UpdatePartResponse);
+  rpc DeletePart (DeletePartRequest) returns (DeletePartResponse);
+}
+
+
+message AddPartRequest {
+  string name = 1;
+  string slug = 2;
+  int32 brandId = 3;
+  string description = 4;
+  int32 price = 5;
+  int32 discountAmount = 6;
+  string partNumber = 7;
+  int32 weightGrams = 8;
+  int32 supplierId = 9;
+  string unit = 10;
+  int32 categoryId = 11;
+  string status = 12;
+  string metaTitle = 13;
+  string metaDescription = 14;
+}
+
+message AddPartResponse {
+  string statusMessage = 1;
+}
+
+
+message GetPartRequest {
+  int32 id = 1;
+}
+
+message GetPartResponse {
+  int32 id = 1;
+  string name = 2;
+  string slug = 3;
+  int32 brandId = 4;
+  string description = 5;
+  int32 price = 6;
+  int32 discountAmount = 7;
+  int32 stock = 8;
+  string partNumber = 9;
+  int32 weightGrams = 10;
+  int32 supplierId = 11;
+  string unit = 12;
+  int32 categoryId = 13;
+  string status = 14;
+  bool isFeatured = 15;
+  string metaTitle = 16;
+  string metaDescription = 17;
+}
+
+message ListPartsRequest {}
+
+message ListPartsResponse {
+  repeated GetPartResponse parts = 1;
+}
+
+
+message UpdatePartRequest {
+  int32 id = 1;
+  string name = 2;
+  string slug = 3;
+  int32 brandId = 4;
+  string description = 5;
+  int32 price = 6;
+  int32 discountAmount = 7;
+  int32 stock = 8;
+  string partNumber = 9;
+  int32 weightGrams = 10;
+  int32 supplierId = 11;
+  string unit = 12;
+  int32 categoryId = 13;
+  string status = 14;
+  bool isFeatured = 15;
+  string metaTitle = 16;
+  string metaDescription = 17;
+}
+
+message UpdatePartResponse {
+  string statusMessage = 1;
+}
+
+
+message DeletePartRequest {
+  int32 id = 1;
+}
+
+message DeletePartResponse {
+  string statusMessage = 1;
+}

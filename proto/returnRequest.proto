@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package returnRequest;
+
+service ReturnRequestService {
+  rpc AddReturnRequest (AddReturnRequestRequest) returns (AddReturnRequestResponse);
+  rpc GetReturnRequest (GetReturnRequestRequest) returns (GetReturnRequestResponse);
+  rpc ListReturnRequests (ListReturnRequestsRequest) returns (ListReturnRequestsResponse);
+  rpc UpdateReturnRequest (UpdateReturnRequestRequest) returns (UpdateReturnRequestResponse);
+  rpc DeleteReturnRequest (DeleteReturnRequestRequest) returns (DeleteReturnRequestResponse);
+}
+
+
+message AddReturnRequestRequest {
+  int32 orderId = 1;
+  int32 userId = 2;
+  string reasonDescription = 3;
+  string status = 4;
+}
+
+message AddReturnRequestResponse {
+  string statusMessage = 1;
+}
+
+
+message GetReturnRequestRequest {
+  int32 id = 1;
+}
+
+message GetReturnRequestResponse {
+  int32 id = 1;
+  int32 orderId = 2;
+  int32 userId = 3;
+  string reasonDescription = 4;
+  string status = 5;
+}
+
+message ListReturnRequestsRequest {}
+
+message ListReturnRequestsResponse {
+  repeated GetReturnRequestResponse returnRequests = 1;
+}
+
+
+message UpdateReturnRequestRequest {
+  int32 id = 1;
+  int32 orderId = 2;
+  int32 userId = 3;
+  string reasonDescription = 4;
+  string status = 5;
+}
+
+message UpdateReturnRequestResponse {
+  string statusMessage = 1;
+}
+
+
+message DeleteReturnRequestRequest {
+  int32 id = 1;
+}
+
+message DeleteReturnRequestResponse {
+  string statusMessage = 1;
+}

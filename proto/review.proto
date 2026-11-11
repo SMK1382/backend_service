@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package review;
+
+service ReviewService {
+  rpc AddReview (AddReviewRequest) returns (AddReviewResponse);
+  rpc GetReview (GetReviewRequest) returns (GetReviewResponse);
+  rpc ListReviews (ListReviewsRequest) returns (ListReviewsResponse);
+  rpc UpdateReview (UpdateReviewRequest) returns (UpdateReviewResponse);
+  rpc DeleteReview (DeleteReviewRequest) returns (DeleteReviewResponse);
+}
+
+
+message AddReviewRequest {
+  int32 partId = 1;
+  int32 userId = 2;
+  int32 rating = 3;
+  string comment = 4;
+  string status = 5;
+}
+
+message AddReviewResponse {
+  string statusMessage = 1;
+}
+
+
+message GetReviewRequest {
+  int32 id = 1;
+}
+
+message GetReviewResponse {
+  int32 id = 1;
+  int32 partId = 2;
+  int32 userId = 3;
+  int32 rating = 4;
+  string comment = 5;
+  string status = 6;
+}
+
+message ListReviewsRequest {}
+
+message ListReviewsResponse {
+  repeated GetReviewResponse reviews = 1;
+}
+
+
+message UpdateReviewRequest {
+  int32 id = 1;
+  int32 partId = 2;
+  int32 userId = 3;
+  int32 rating = 4;
+  string comment = 5;
+  string status = 6;
+}
+
+message UpdateReviewResponse {
+  string statusMessage = 1;
+}
+
+
+message DeleteReviewRequest {
+  int32 id = 1;
+}
+
+message DeleteReviewResponse {
+  string statusMessage = 1;
+}

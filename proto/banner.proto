@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package banner;
+
+service BannerService {
+  rpc AddBanner (AddBannerRequest) returns (AddBannerResponse);
+  rpc GetBanner (GetBannerRequest) returns (GetBannerResponse);
+  rpc ListBanners (ListBannersRequest) returns (ListBannersResponse);
+  rpc UpdateBanner (UpdateBannerRequest) returns (UpdateBannerResponse);
+  rpc DeleteBanner (DeleteBannerRequest) returns (DeleteBannerResponse);
+}
+
+
+message AddBannerRequest {
+  string title = 1;
+  string subtitle = 2;
+  string imageUrl = 3;
+  string linkUrl = 4;
+}
+
+message AddBannerResponse {
+  string statusMessage = 1;
+}
+
+
+message GetBannerRequest {
+  int32 id = 1;
+}
+
+message GetBannerResponse {
+  int32 id = 1;
+  string title = 2;
+  string subtitle = 3;
+  string imageUrl = 4;
+  string linkUrl = 5;
+  int32 sortOrder = 6;
+  bool isActive = 7;
+}
+
+message ListBannersRequest {}
+
+message ListBannersResponse {
+  repeated GetBannerResponse banners = 1;
+}
+
+
+message UpdateBannerRequest {
+  int32 id = 1;
+  string title = 2;
+  string subtitle = 3;
+  string imageUrl = 4;
+  string linkUrl = 5;
+  int32 sortOrder = 6;
+  bool isActive = 7;
+}
+
+message UpdateBannerResponse {
+  string statusMessage = 1;
+}
+
+
+message DeleteBannerRequest {
+  int32 id = 1;
+}
+
+message DeleteBannerResponse {
+  string statusMessage = 1;
+}

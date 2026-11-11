@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package carBrand;
+
+service CarBrandService {
+  rpc AddCarBrand (AddCarBrandRequest) returns (AddCarBrandResponse);
+  rpc GetCarBrand (GetCarBrandRequest) returns (GetCarBrandResponse);
+  rpc ListCarBrands (ListCarBrandsRequest) returns (ListCarBrandsResponse);
+  rpc UpdateCarBrand (UpdateCarBrandRequest) returns (UpdateCarBrandResponse);
+  rpc DeleteCarBrand (DeleteCarBrandRequest) returns (DeleteCarBrandResponse);
+}
+
+
+message AddCarBrandRequest {
+  string name = 1;
+  string slug = 2;
+  string country = 3;
+  string description = 4;
+}
+
+message AddCarBrandResponse {
+  string statusMessage = 1;
+}
+
+
+message GetCarBrandRequest {
+  int32 id = 1;
+}
+
+message GetCarBrandResponse {
+  int32 id = 1;
+  string name = 2;
+  string slug = 3;
+  string country = 4;
+  string description = 5;
+  bool isActive = 6;
+}
+
+message ListCarBrandsRequest {}
+
+message ListCarBrandsResponse {
+  repeated GetCarBrandResponse carBrands = 1;
+}
+
+
+message UpdateCarBrandRequest {
+  int32 id = 1;
+  string name = 2;
+  string slug = 3;
+  string country = 4;
+  string description = 5;
+  bool isActive = 6;
+}
+
+message UpdateCarBrandResponse {
+  string statusMessage = 1;
+}
+
+
+message DeleteCarBrandRequest {
+  int32 id = 1;
+}
+
+message DeleteCarBrandResponse {
+  string statusMessage = 1;
+}

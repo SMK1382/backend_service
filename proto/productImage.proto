@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package productImage;
+
+service ProductImageService {
+  rpc AddProductImage (AddProductImageRequest) returns (AddProductImageResponse);
+  rpc GetProductImage (GetProductImageRequest) returns (GetProductImageResponse);
+  rpc ListProductImages (ListProductImagesRequest) returns (ListProductImagesResponse);
+  rpc UpdateProductImage (UpdateProductImageRequest) returns (UpdateProductImageResponse);
+  rpc DeleteProductImage (DeleteProductImageRequest) returns (DeleteProductImageResponse);
+}
+
+
+message AddProductImageRequest {
+  int32 partId = 1;
+  string url = 2;
+  string alt = 3;
+}
+
+message AddProductImageResponse {
+  string statusMessage = 1;
+}
+
+
+message GetProductImageRequest {
+  int32 id = 1;
+}
+
+message GetProductImageResponse {
+  int32 id = 1;
+  int32 partId = 2;
+  string url = 3;
+  string alt = 4;
+  int32 sortOrder = 5;
+}
+
+message ListProductImagesRequest {}
+
+message ListProductImagesResponse {
+  repeated GetProductImageResponse productImages = 1;
+}
+
+
+message UpdateProductImageRequest {
+  int32 id = 1;
+  int32 partId = 2;
+  string url = 3;
+  string alt = 4;
+  int32 sortOrder = 5;
+}
+
+message UpdateProductImageResponse {
+  string statusMessage = 1;
+}
+
+
+message DeleteProductImageRequest {
+  int32 id = 1;
+}
+
+message DeleteProductImageResponse {
+  string statusMessage = 1;
+}
