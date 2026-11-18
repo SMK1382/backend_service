@@ -42,9 +42,10 @@ app.get('/', (req: Request, res: Response) => {
     res.json({ message: 'server is active:)' });
 });
 
-app.use((req: Request, res: Response, next: NextFunction) => {
-    console.log("recieve")
-})
+// app.use((req: Request, res: Response, next: NextFunction) => {
+//     console.log("recieve")
+// })
+
 app.use('/auth', auth)
 app.use('/car-brands', carBrand)
 app.use('/car-models', carModel)
@@ -65,13 +66,7 @@ app.use('/return-requests', returnRequest)
 app.use('/wishlist', wishlist)
 app.use('/shopping-cart', shoppingCart)
 
-app.use(
-    (
-        err: unknown,
-        _req: express.Request,
-        res: express.Response,
-        _next: express.NextFunction,
-    ) => {
+app.use((err: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction,) => {
         console.error(err);
         res.status(500).json({ error: 'خطای داخلی سرور' });
     },

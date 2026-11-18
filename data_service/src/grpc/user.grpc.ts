@@ -111,7 +111,7 @@ export async function deleteUser(call: grpc.ServerUnaryCall<DeleteUserRequest, D
     const result = await db
   .delete(users)
   .where(eq(users.phone, data.phone));
-  console.log(result)
+//   console.log(result)
     if (result) {
         return callBack(null, { statusMessage: "user deleted" })
     }

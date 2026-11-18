@@ -21,7 +21,7 @@ export interface GetUserResponse {
     phone: string,
     nationalCode: string,
     status: string,
-    role: string
+    role: 'User' | 'Admin' | 'Super_Admin'
 }
 
 export interface ListUsersRequest { }
@@ -36,7 +36,7 @@ export interface UpdateUserRequest {
     lastName: string,
     email: string,
     status: "Active" | "Inactive",
-    role: 'Super_Admin' | 'Super' | 'User',
+    role: 'User' | 'Admin' | 'Super_Admin'
 }
 
 export interface UpdateUserResponse {
